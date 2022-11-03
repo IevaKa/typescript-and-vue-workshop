@@ -1,8 +1,14 @@
-<script>
-export default {
+{ id: '7d9f3f17-964a-4e82-98e5-ecbba4d709a1', name: 'Ghost Pepper Poppers', status: 'Want to Try', },
+
+<script lang="ts">
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
+import type { Dish } from '@/types'
+
+export default defineComponent({
   props: {
     dish: {
-      type: Object,
+      type: Object as PropType<Dish>,
       required: true,
     },
   },
@@ -26,7 +32,7 @@ export default {
       this.$emit('delete-dish', this.dish)
     },
   },
-}
+})
 </script>
 
 <template>

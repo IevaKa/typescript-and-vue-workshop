@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+import { restaurantStatusList } from '@/constants'
 import { v4 as uuidv4 } from 'uuid'
 
 export default {
@@ -11,6 +12,7 @@ export default {
       website: '',
       status: 'Want to Try',
     },
+    restaurantStatusList,
   }),
 }
 </script>
