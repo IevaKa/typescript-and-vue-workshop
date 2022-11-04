@@ -1,38 +1,26 @@
-{ id: '7d9f3f17-964a-4e82-98e5-ecbba4d709a1', name: 'Ghost Pepper Poppers', status: 'Want to Try', },
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-import type { PropType } from 'vue'
+<script lang="ts" setup>
+import { computed } from 'vue'
 import type { Dish } from '@/types'
 
-export default defineComponent({
-  props: {
-    dish: {
-      type: Object as PropType<Dish>,
-      required: true,
-    },
-  },
-  emits: ['delete-dish'],
-  computed: {
-    statusColor() {
-      switch (this.dish.status) {
-        case 'Want to Try':
-          return 'is-warning'
-        case 'Recommended':
-          return 'is-success'
-        case 'Do Not Recommend':
-          return 'is-danger'
-        default:
-          return ''
-      }
-    },
-  },
-  methods: {
-    deleteDish() {
-      this.$emit('delete-dish', this.dish)
-    },
-  },
+const { dish } = defineProps<{ dish: Dish }>()
+const emits = defineEmits<{ (e: 'delete-dish', dish: Dish): void }>()
+
+const statusColor = computed(() => {
+  switch (dish.status) {
+    case 'Want to Try':
+      return 'is-warning'
+    case 'Recommended':
+      return 'is-success'
+    case 'Do Not Recommend':
+      return 'is-danger'
+    default:
+      return ''
+  }
 })
+
+const deleteDish = () => {
+  emits('delete-dish', dish)
+}
 </script>
 
 <template>

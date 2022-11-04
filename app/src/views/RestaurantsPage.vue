@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRestaurantStore } from '@/stores/RestaurantStore'
 import type { Restaurant } from '@/types'
 import { computed } from '@vue/reactivity'
 import { onMounted, ref } from 'vue'
@@ -8,51 +9,28 @@ import RestaurantCard from '../components/RestaurantCard.vue'
 import SideMenu from '../components/SideMenu.vue'
 
 const filterText = ref('')
-const list = ref<Restaurant[]>([
-  {
-    id: '9f995ce4-d2fc-4d00-af1d-6cb1647c6bd3',
-    name: 'Quiche From a Rose',
-    address: '283 Thisisnota St.',
-    website: 'www.quichefromarose.com',
-    status: 'Want to Try',
-  },
-  {
-    id: 'ae62a3da-791b-4f44-99a1-4be1b0ec30b8',
-    name: 'Tamago Never Dies',
-    address: '529 Letsgofora Dr.',
-    website: 'www.tamagoneverdies.com',
-    status: 'Recommended',
-  },
-  {
-    id: '9b361dae-2d44-4499-9940-97e188d41a32',
-    name: 'Penne For Your Thoughts',
-    address: '870 Thisisa St.',
-    website: 'www.penneforyourthoughts.com',
-    status: 'Do Not Recommend',
-  },
-])
+const restaurantStore = useRestaurantStore()
+const list = restaurantStore.list
 const showNewForm = ref(false)
 
 const filteredRestaurantList = computed((): Restaurant[] =>
-  list.value.filter((restaurant) => {
+  list.filter((restaurant) => {
     if (restaurant.name) {
       return restaurant.name.toLowerCase().includes(filterText.value.toLowerCase())
     } else {
-      return list.value
+      return list
     }
   })
 )
 const numberOfRestaurants = computed(() => filteredRestaurantList.value.length)
 
 const addRestaurant = (payload: Restaurant) => {
-  list.value.push(payload)
+  restaurantStore.addRestaurant(payload)
   hideForm()
 }
 
 const deleteRestaurant = (payload: Restaurant) => {
-  list.value = list.value.filter((restaurant) => {
-    return restaurant.id !== payload.id
-  })
+  restaurantStore.deleteRestaurant(payload)
 }
 
 const hideForm = () => {
